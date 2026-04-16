@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import { Lock, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const AdminLogin = ({ onLogin }) => {
+  const [password, setPassword] = useState('');
+
+  // Nombre del cliente para la personalización
+  const CLIENT_NAME = import.meta.env.VITE_CLIENT_NAME || "Lic. Araceli Rojas";
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password.trim() === "") {
+      return alert("Por favor, ingresá la contraseña");
+    }
+    onLogin(password);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 transition-colors font-sans">
+      <div className="bg-white p-8 md:p-10 rounded-3xl shadow-2xl w-full max-w-md border border-slate-100 relative">
+        
+        {/* Botón para volver al inicio */}
+        <Link 
+          to="/" 
+          className="absolute top-6 left-6 flex items-center gap-2 text-slate-400 hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest"
+        >
+          <ArrowLeft size={14} /> Volver al sitio
+        </Link>
+
+        <div className="text-center mb-10 mt-4">
+          {/* Fondo del icono en Rosa Viejo clarito */}
+          <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
+            <Lock className="text-primary w-10 h-10 -rotate-3" />
+          </div>
+          <h2 className="text-3xl font-black text-secondary tracking-tighter uppercase">
+            Acceso <span className="text-primary">Privado</span>
+          </h2>
+          <p className="text-slate-500 mt-2 text-sm font-medium">
+            Gestión de Agenda — {CLIENT_NAME}
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-[10px] font-black text-slate-400 mb-2 uppercase tracking-[0.2em] ml-1">
+              Contraseña de seguridad
+            </label>
+            <input 
+              type="password" 
+              placeholder="••••••••"
+              className="w-full p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-primary transition-all font-mono"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              autoFocus
+            />
+          </div>
+
+          <button 
+            type="submit"
+            className="w-full bg-secondary text-white py-4 rounded-2xl font-black text-lg hover:bg-primary active:scale-[0.98] transition-all shadow-xl shadow-slate-200 uppercase tracking-tight"
+          >
+            Entrar al Panel
+          </button>
+        </form>
+
+        <div className="mt-10 flex flex-col items-center gap-2">
+          <div className="h-1 w-12 bg-slate-100 rounded-full"></div>
+          <p className="text-center text-[10px] text-slate-300 uppercase font-black tracking-[0.3em]">
+            Base de Oro v1.0
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminLogin;
