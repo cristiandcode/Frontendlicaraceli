@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  /* Definimos los colores de la Lic. Araceli */
+  --color-primary: #b07d88;        /* Rosa Viejo */
+  --color-secondary: #4a4a4a;      /* Gris Oscuro */
+  --color-accent: #d1d1d1;         /* Gris Claro */
+  --color-dark: #1a1a1a;           /* Negro suave para textos */
+  
+  /* Fuentes sugeridas para psicología */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  @apply bg-white text-dark antialiased;
+}
