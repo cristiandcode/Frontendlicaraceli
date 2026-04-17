@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Bloquear acceso a paneles administrativos
+Disallow: /admin
+Disallow: /login
+
+# Ubicación del Sitemap
+Sitemap: https://aracelirojaspsicologa.com/sitemap.xml
