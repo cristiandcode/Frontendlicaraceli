@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
-import { Trash2, MessageCircle, Calendar, Clock, Users, LogOut, Save, X, CheckCircle, Video, User, ArrowLeft, AlertCircle, Phone, CalendarDays, MapPin } from 'lucide-react';
+import { Trash2, MessageCircle, Calendar, Clock, Users, LogOut, Save, X, CheckCircle, Video, ArrowLeft, AlertCircle, Phone, CalendarDays, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminPanel = () => {
@@ -22,9 +22,9 @@ const AdminPanel = () => {
   const [appointments, setAppointments] = useState([]);
   const [range, setRange] = useState({ start: "08:00", end: "12:00", interval: 30 });
   
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  const SETTINGS_URL = `${API_BASE_URL}/api/settings`;
-  const APPOINTMENTS_URL = `${API_BASE_URL}/api/appointments`;
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+  const SETTINGS_URL = `${API_BASE_URL}/settings`;
+  const APPOINTMENTS_URL = `${API_BASE_URL}/appointments`;
 
   useEffect(() => {
     if (isLogged) {
@@ -186,9 +186,8 @@ const AdminPanel = () => {
   const daysLabels = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 pb-32 md:pb-12">
+    <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 pb-12">
       
-      {/* Notificaciones Modernas */}
       {notification.show && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[200] w-[90%] max-w-md animate-in fade-in slide-in-from-top-4 duration-300">
           <div className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border ${
@@ -202,7 +201,6 @@ const AdminPanel = () => {
         </div>
       )}
 
-      {/* Modal de Eliminación Pro */}
       {deleteModal.show && (
         <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all">
           <div className="bg-white w-full max-w-md rounded-[2.5rem] md:rounded-3xl p-8 shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-10 md:slide-in-from-bottom-0 duration-300">
@@ -228,8 +226,6 @@ const AdminPanel = () => {
       )}
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 pt-6 md:pt-10">
-        
-        {/* Header Elegante */}
         <header className="flex flex-col md:flex-row justify-between items-center mb-8 gap-6 bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100">
           <div className="text-center md:text-left">
             <div className="flex items-center gap-2 justify-center md:justify-start mb-1">
@@ -253,8 +249,6 @@ const AdminPanel = () => {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
-          
-          {/* Columna Días (Sidebar en Desktop) */}
           <section className="lg:col-span-4 xl:col-span-3 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
             <h3 className="font-black mb-6 flex items-center gap-3 text-slate-700 uppercase text-xs tracking-widest">
               <CalendarDays size={18} className="text-primary" /> Días Laborales
@@ -280,13 +274,11 @@ const AdminPanel = () => {
             </div>
           </section>
 
-          {/* Columna Horarios (Main en Desktop) */}
           <section className="lg:col-span-8 xl:col-span-9 bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100">
             <h3 className="font-black mb-6 flex items-center gap-3 text-slate-700 uppercase text-xs tracking-widest">
               <Clock size={18} className="text-primary" /> Configurar Horas
             </h3>
             
-            {/* Tabs de Horarios con scroll horizontal en móvil */}
             <div className="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide -mx-2 px-2">
               {[1, 2, 3, 4, 5, 6, 0].map(d => (
                 <button
@@ -303,7 +295,6 @@ const AdminPanel = () => {
               ))}
             </div>
 
-            {/* Generador de rangos inteligente */}
             <div className="bg-[#F8FAFC] p-6 rounded-[2rem] mb-8 border border-slate-100">
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Generador Automático</p>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -320,9 +311,9 @@ const AdminPanel = () => {
                 <div className="space-y-1">
                     <span className="text-[9px] font-bold text-slate-400 ml-2 uppercase">Duración</span>
                     <select value={range.interval} onChange={(e)=>setRange({...range, interval: e.target.value})} className="w-full p-4 rounded-2xl border-none shadow-sm text-sm font-bold focus:ring-2 ring-primary outline-none appearance-none bg-white">
+                        <option value="30">30</option>
                         <option value="45">45 min</option>
                         <option value="60">1 hora</option>
-                        <option value="30">30 min</option>
                     </select>
                 </div>
                 <button onClick={addRange} className="self-end bg-secondary text-white p-4 rounded-2xl font-black text-xs uppercase hover:bg-primary transition-all shadow-md shadow-secondary/10">
@@ -331,7 +322,6 @@ const AdminPanel = () => {
               </div>
             </div>
 
-            {/* Chips de horas con diseño de lujo */}
             <div className="flex flex-wrap gap-3 min-h-[120px] content-start">
               {(settings?.workingHours?.[activeTab] || []).length === 0 ? (
                 <div className="w-full flex flex-col items-center justify-center py-8 text-slate-300 border-2 border-dashed border-slate-100 rounded-[2rem]">
@@ -349,10 +339,18 @@ const AdminPanel = () => {
                 ))
               )}
             </div>
+            
+            <div className="mt-10 pt-6 border-t border-slate-50 flex justify-end">
+                <button 
+                    onClick={handleUpdate} 
+                    className="flex items-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-xl font-bold text-xs uppercase hover:bg-primary transition-all shadow-lg active:scale-95"
+                >
+                    <Save size={16} /> Guardar cambios
+                </button>
+            </div>
           </section>
         </div>
 
-        {/* Listado de Pacientes - REINVENTADO PARA MÓVIL */}
         <section className="mb-20">
           <div className="flex items-center justify-between mb-8 px-2">
             <h2 className="text-xl font-black flex items-center gap-3 text-slate-800 uppercase tracking-tight">
@@ -364,7 +362,6 @@ const AdminPanel = () => {
             </span>
           </div>
 
-          {/* Vista para Desktop (Tabla) */}
           <div className="hidden md:block bg-white rounded-[2rem] shadow-sm overflow-hidden border border-slate-100">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
@@ -389,7 +386,7 @@ const AdminPanel = () => {
                     </tr>
                   ) : (
                     appointments.map((apt) => (
-                      <tr key={apt._id} className="hover:bg-slate-50/50 transition-colors group">
+                      <tr key={apt._id} className="hover:bg-slate-50/50 transition-colors">
                         <td className="p-6">
                           <div className="flex flex-col">
                             <span className="text-[10px] font-black text-slate-400 uppercase mb-1">{apt.date}</span>
@@ -421,7 +418,7 @@ const AdminPanel = () => {
                           </div>
                         </td>
                         <td className="p-6 text-right">
-                          <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex justify-end gap-2 transition-opacity">
                             <button onClick={() => openWhatsApp(apt)} className="p-3 bg-white text-primary hover:bg-primary hover:text-white rounded-xl shadow-sm border border-slate-100 transition-all">
                               <MessageCircle size={18} />
                             </button>
@@ -438,7 +435,6 @@ const AdminPanel = () => {
             </div>
           </div>
 
-          {/* Vista para Mobile (Cards) */}
           <div className="md:hidden space-y-4">
             {appointments.length === 0 ? (
                <div className="bg-white rounded-[2rem] p-12 text-center border border-slate-100">
@@ -483,18 +479,6 @@ const AdminPanel = () => {
             )}
           </div>
         </section>
-      </div>
-
-      {/* Botón Guardar Flotante (UI/UX Refined) */}
-      <div className="fixed bottom-0 left-0 w-full p-4 md:p-8 bg-gradient-to-t from-white via-white/90 to-transparent z-50">
-        <div className="max-w-6xl mx-auto">
-          <button 
-            onClick={handleUpdate} 
-            className="w-full bg-slate-900 text-white py-5 md:py-6 rounded-2xl md:rounded-3xl font-black text-sm md:text-base shadow-2xl hover:scale-[1.02] active:scale-95 transition-all uppercase flex items-center justify-center gap-4 ring-8 ring-white"
-          >
-            <Save size={20} className="text-primary" /> Guardar Cambios en Servidor
-          </button>
-        </div>
       </div>
     </div>
   );
