@@ -1,10 +1,13 @@
 import React from "react";
 import { Navlinks } from "../Navbar/Navbar";
-import { FaFacebook, FaInstagram, FaLinkedin, FaExternalLinkAlt } from "react-icons/fa";
+import { FaInstagram, FaTiktok, FaExternalLinkAlt } from "react-icons/fa";
 
 const Footer = () => {
+  const instagramUrl = "https://www.instagram.com/silvia.araceli.rojas?igsh=MWQwaXNzYXZrcmY1ag==";
+  const tiktokUrl = "https://www.tiktok.com/@lic.aracelirojas?_t=ZM-8uH6unp2D6C&_r=1";
+
   return (
-    <footer className="bg-slate-50 text-secondary pt-12 border-t border-slate-200 transition-colors duration-300">
+    <footer className="bg-white text-secondary pt-12 border-t border-slate-200 transition-colors duration-300">
       <div className="container mx-auto px-4">
         {/* Navegación Rápida */}
         <nav className="mb-8">
@@ -24,35 +27,50 @@ const Footer = () => {
       </div>
 
       {/* Franja Inferior de Créditos y Redes */}
-      <div className="bg-white border-t border-slate-100">
-        <div className="container mx-auto px-4 py-8">
+      <div className="bg-rosasuave border-t border-primary/10">
+        <div className="container mx-auto px-4 py-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             
-            {/* Logo/Nombre - Rosa Viejo */}
+            {/* Logo/Nombre */}
             <div className="text-center md:text-left">
-              <h2 className="text-2xl font-black tracking-tighter">
+              <h2 className="text-2xl font-black tracking-tighter text-secondary">
                 Lic. <span className="text-primary italic">Araceli Rojas</span>
               </h2>
-              <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em]">Psicología Social & Clínica</p>
+              <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Psicología Social & Clínica</p>
             </div>
 
-            {/* Redes Sociales */}
-            <div className="flex gap-6">
-              <FaFacebook className="text-xl text-slate-400 hover:text-primary cursor-pointer transition-all hover:scale-110" />
-              <FaInstagram className="text-xl text-slate-400 hover:text-primary cursor-pointer transition-all hover:scale-110" />
-              <FaLinkedin className="text-xl text-slate-400 hover:text-primary cursor-pointer transition-all hover:scale-110" />
+            {/* Redes Sociales Reales */}
+            <div className="flex gap-8">
+              <a 
+                href={instagramUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center gap-1"
+              >
+                <FaInstagram className="text-2xl text-secondary group-hover:text-primary transition-all group-hover:scale-110" />
+                <span className="text-[8px] font-bold text-slate-400 group-hover:text-primary uppercase tracking-widest">Instagram</span>
+              </a>
+              <a 
+                href={tiktokUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center gap-1"
+              >
+                <FaTiktok className="text-2xl text-secondary group-hover:text-primary transition-all group-hover:scale-110" />
+                <span className="text-[8px] font-bold text-slate-400 group-hover:text-primary uppercase tracking-widest">TikTok</span>
+              </a>
             </div>
 
             {/* Copyright y Crédito CD Sistemas */}
             <div className="flex flex-col items-center md:items-end gap-3 text-xs text-slate-500">
-              <p>© {new Date().getFullYear()} Lic. Araceli Rojas. Misiones, Argentina.</p>
+              <p className="font-medium">© {new Date().getFullYear()} Lic. Araceli Rojas. Misiones, Argentina.</p>
               
               {/* Botón de Desarrollador */}
               <a 
                 href="https://www.cdsistemas.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="group flex items-center gap-2 bg-slate-100 hover:bg-primary/10 px-4 py-2 rounded-full border border-slate-200 hover:border-primary/30 transition-all duration-300"
+                className="group flex items-center gap-2 bg-white hover:bg-primary/10 px-4 py-2 rounded-xl border border-primary/10 shadow-sm transition-all duration-300"
               >
                 <span className="text-[10px] font-bold uppercase tracking-tight text-slate-400 group-hover:text-primary">
                   Desarrollado por <span className="text-secondary group-hover:text-primary">CD Sistemas</span>
