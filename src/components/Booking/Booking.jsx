@@ -17,14 +17,20 @@ const Booking = () => {
     blockedDates: []
   });
 
+  // CORRECCIÓN: Se eliminó "/api" manual porque VITE_API_URL ya suele traerlo
+  // Si tu .env no lo trae, cambia esto a: `${API_BASE_URL}/api/appointments`
   const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  const APPOINTMENTS_URL = `${API_BASE_URL}/api/appointments`;
-  const SETTINGS_URL = `${API_BASE_URL}/api/settings`;
+  const APPOINTMENTS_URL = `${API_BASE_URL}/appointments`;
+  const SETTINGS_URL = `${API_BASE_URL}/settings`;
 
   useEffect(() => {
     fetch(SETTINGS_URL)
       .then(res => res.json())
-      .then(data => { if (data) setSettings(data); })
+      .then(data => { 
+        if (data && data.workingHours) {
+            setSettings(data);
+        }
+      })
       .catch(err => console.error("Error cargando configuración:", err));
   }, [SETTINGS_URL]);
 
@@ -53,9 +59,13 @@ const Booking = () => {
   };
 
   const currentDayOfWeek = date.getDay();
-  const allSlotsForDay = settings.workingHours[currentDayOfWeek] || [];
+  // Buscamos slots soportando que la key sea número o string
+  const allSlotsForDay = settings.workingHours[currentDayOfWeek] || settings.workingHours[String(currentDayOfWeek)] || [];
   
   const availableSlots = allSlotsForDay.filter(slot => {
+    const isBusy = Array.isArray(busySlots) && busySlots.includes(slot);
+    if (isBusy) return false;
+
     const today = new Date();
     const isToday = date.toDateString() === today.toDateString();
     
@@ -76,8 +86,11 @@ const Booking = () => {
 
   const handleBooking = async (e) => {
     e.preventDefault();
+    const fullPhone = `+54 9 ${formData.phone}`;
+    
     const bookingData = {
       ...formData,
+      phone: fullPhone,
       date: date.toISOString().split('T')[0],
       time: selectedTime
     };
@@ -156,11 +169,9 @@ const Booking = () => {
                     availableSlots.map(slot => (
                       <button
                         key={slot}
-                        disabled={busySlots.includes(slot)}
                         onClick={() => setSelectedTime(slot)}
                         className={`py-3 rounded-xl font-bold transition-all duration-300 ${
                           selectedTime === slot ? 'bg-primary text-white scale-105 shadow-lg shadow-primary/30' : 
-                          busySlots.includes(slot) ? 'bg-slate-200 cursor-not-allowed opacity-40 text-slate-400' : 
                           'bg-slate-100 text-secondary hover:bg-primary/10 border-2 border-transparent hover:border-primary'
                         }`}
                       >
@@ -168,7 +179,10 @@ const Booking = () => {
                       </button>
                     ))
                   ) : (
-                    <p className="col-span-3 text-sm italic text-slate-400 text-center py-10">No hay horarios disponibles para hoy.</p>
+                    <div className="col-span-3 text-center py-10">
+                       <p className="text-sm italic text-slate-400">No hay horarios disponibles.</p>
+                       <p className="text-[10px] text-slate-300 mt-2">Día {currentDayOfWeek}</p>
+                    </div>
                   )}
                 </div>
 
@@ -217,13 +231,7 @@ const Booking = () => {
                     </div>
                   </button>
                 </div>
-                
-                <button 
-                  onClick={() => setShowModalityModal(false)}
-                  className="mt-8 text-slate-400 text-sm font-bold hover:text-red-500 transition-colors"
-                >
-                  Regresar
-                </button>
+                <button onClick={() => setShowModalityModal(false)} className="mt-8 text-slate-400 text-sm font-bold hover:text-red-500">Regresar</button>
               </div>
             </div>
           )}
@@ -231,9 +239,9 @@ const Booking = () => {
           {step === 2 && (
             <form onSubmit={handleBooking} className="space-y-5 max-w-lg mx-auto">
               <div className="text-center mb-6 bg-primary/5 p-4 rounded-2xl border border-primary/20">
-                <p className="text-primary font-bold flex items-center justify-center gap-2">
-                    <CalendarIcon size={18}/> {date.toLocaleDateString()} — {selectedTime}hs 
-                    <span className="text-slate-300 mx-1">|</span>
+                <p className="text-primary font-bold">
+                    <CalendarIcon className="inline mr-2" size={18}/> {date.toLocaleDateString()} — {selectedTime}hs 
+                    <span className="text-slate-300 mx-2">|</span>
                     <span className="uppercase text-xs tracking-widest">{formData.modality}</span>
                 </p>
               </div>
@@ -250,55 +258,40 @@ const Booking = () => {
 
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-400 uppercase ml-2">WhatsApp</label>
-                <input 
-                    type="tel" 
-                    placeholder="3765XXXXXX" 
-                    required
-                    value={formData.phone}
-                    className="w-full p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-primary transition-colors"
-                    onChange={(e) => {
-                        const value = e.target.value.replace(/[^0-9]/g, '');
-                        setFormData({...formData, phone: value});
-                    }}
-                />
+                <div className="relative flex items-center">
+                  <span className="absolute left-4 font-bold text-secondary bg-slate-100 px-2 py-1 rounded-lg text-sm">+54 9</span>
+                  <input 
+                      type="tel" placeholder="3765XXXXXX" required
+                      value={formData.phone}
+                      className="w-full p-4 pl-20 rounded-2xl border-2 border-slate-100 outline-none focus:border-primary transition-colors"
+                      onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/[^0-9]/g, '')})}
+                  />
+                </div>
               </div>
 
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-400 uppercase ml-2">Motivo de Consulta</label>
                 <textarea 
-                    placeholder="Ej: Consulta inicial, Terapia grupal, etc..." required
-                    value={formData.reason}
-                    rows="3"
+                    placeholder="Ej: Consulta inicial..." required
+                    value={formData.reason} rows="3"
                     className="w-full p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-primary transition-colors resize-none"
                     onChange={(e) => setFormData({...formData, reason: e.target.value})}
                 />
               </div>
 
-              <button type="submit" className="w-full bg-primary text-white py-5 rounded-2xl font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:brightness-110 transition-all shadow-xl shadow-primary/20">
-                Confirmar Turno <CheckCircle size={22}/>
+              <button type="submit" className="w-full bg-primary text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:brightness-110 shadow-xl shadow-primary/20">
+                Confirmar Turno
               </button>
-              
-              <button type="button" onClick={() => setStep(1)} className="w-full text-slate-400 text-sm font-bold hover:text-primary transition-colors">
-                ← Volver a elegir fecha
-              </button>
+              <button type="button" onClick={() => setStep(1)} className="w-full text-slate-400 text-sm font-bold mt-2">← Volver</button>
             </form>
           )}
 
           {step === 3 && (
             <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-primary/10 text-primary rounded-full mb-6">
-                <CheckCircle size={48} />
-              </div>
-              <h3 className="text-3xl font-black mb-3 tracking-tighter">¡TURNO SOLICITADO!</h3>
-              <p className="text-slate-500 max-w-sm mx-auto mb-8">
-                La Lic. Araceli ha sido notificada. Por favor, envía el mensaje de WhatsApp que se acaba de abrir para coordinar los detalles de la sesión.
-              </p>
-              <button 
-                onClick={() => setStep(1)} 
-                className="bg-slate-100 px-10 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-md"
-              >
-                Finalizar
-              </button>
+              <CheckCircle size={60} className="text-primary mx-auto mb-6" />
+              <h3 className="text-3xl font-black mb-3">¡TURNO SOLICITADO!</h3>
+              <p className="text-slate-500 mb-8">Envía el WhatsApp que se abrió para finalizar.</p>
+              <button onClick={() => setStep(1)} className="bg-slate-100 px-10 py-4 rounded-2xl font-black uppercase">Finalizar</button>
             </div>
           )}
         </div>
