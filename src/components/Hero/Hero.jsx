@@ -5,7 +5,7 @@ import HeroImg from "../../assets/fotolicaraceli.jpeg";
 const Hero = () => {
   return (
     <div id="home" className="bg-white text-secondary py-12 sm:py-0 overflow-hidden transition-colors duration-300">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 pb-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 place-items-center min-h-[600px]">
           
           {/* Imagen con máscara circular profesional */}
