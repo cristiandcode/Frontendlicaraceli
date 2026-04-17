@@ -1,19 +1,49 @@
 import React, { useState } from 'react';
-import { Lock, ArrowLeft } from 'lucide-react';
+import { Lock, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminLogin = ({ onLogin }) => {
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Nombre del cliente para la personalización
   const CLIENT_NAME = import.meta.env.VITE_CLIENT_NAME || "Lic. Araceli Rojas";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    
     if (password.trim() === "") {
-      return alert("Por favor, ingresá la contraseña");
+      return setError("Por favor, ingresá la contraseña");
     }
-    onLogin(password);
+
+    setIsLoading(true);
+
+    try {
+      // Usamos fetch nativo para evitar errores de dependencias (sustituye a axios)
+      const response = await fetch(`${API_URL}/settings/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': password.trim()
+        }
+      });
+
+      if (!response.ok) {
+        // Si el servidor responde con 401 o cualquier error, lanzamos al catch
+        throw new Error("Unauthorized");
+      }
+
+      // Si la respuesta es exitosa (200), ejecutamos el login
+      onLogin(password.trim());
+    } catch (err) {
+      console.error("Error de login:", err);
+      setError("Contraseña incorrecta. Intentalo de nuevo.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -29,7 +59,6 @@ const AdminLogin = ({ onLogin }) => {
         </Link>
 
         <div className="text-center mb-10 mt-4">
-          {/* Fondo del icono en Rosa Viejo clarito */}
           <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
             <Lock className="text-primary w-10 h-10 -rotate-3" />
           </div>
@@ -49,18 +78,31 @@ const AdminLogin = ({ onLogin }) => {
             <input 
               type="password" 
               placeholder="••••••••"
-              className="w-full p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-primary transition-all font-mono"
+              className={`w-full p-4 rounded-2xl border-2 outline-none transition-all font-mono ${
+                error ? 'border-red-400' : 'border-slate-100 focus:border-primary'
+              }`}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               autoFocus
+              disabled={isLoading}
             />
+            {error && (
+              <p className="text-red-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider">
+                {error}
+              </p>
+            )}
           </div>
 
           <button 
             type="submit"
-            className="w-full bg-secondary text-white py-4 rounded-2xl font-black text-lg hover:bg-primary active:scale-[0.98] transition-all shadow-xl shadow-slate-200 uppercase tracking-tight"
+            disabled={isLoading}
+            className="w-full bg-secondary text-white py-4 rounded-2xl font-black text-lg hover:bg-primary active:scale-[0.98] transition-all shadow-xl shadow-slate-200 uppercase tracking-tight flex items-center justify-center gap-2"
           >
-            Entrar al Panel
+            {isLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Entrar al Panel"
+            )}
           </button>
         </form>
 
