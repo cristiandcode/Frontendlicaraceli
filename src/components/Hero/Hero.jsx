@@ -44,7 +44,7 @@ const Hero = () => {
               Especialista en acompañamiento integral de niñez, género y familia. 
               Brindando herramientas desde 2017 para pacientes individuales, grupales 
               y atención especializada para la comunidad cristiana.
-              <span className="block mt-2 font-bold text-primary italic">Atención 100% Online.</span>
+              <span className="block mt-2 font-bold text-primary italic">Atención Presencial y Online.</span>
             </p>
             
             <div className="flex flex-wrap gap-4 justify-center sm:justify-start pt-4">
