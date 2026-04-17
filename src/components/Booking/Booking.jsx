@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { Clock, CheckCircle, Calendar as CalendarIcon, Video, User } from 'lucide-react';
+import { Clock, CheckCircle, Calendar as CalendarIcon, Video, User, MapPin } from 'lucide-react';
 
 const Booking = () => {
   const [date, setDate] = useState(new Date());
@@ -53,7 +53,20 @@ const Booking = () => {
   };
 
   const currentDayOfWeek = date.getDay();
-  const availableSlots = settings.workingHours[currentDayOfWeek] || [];
+  const allSlotsForDay = settings.workingHours[currentDayOfWeek] || [];
+  
+  const availableSlots = allSlotsForDay.filter(slot => {
+    const today = new Date();
+    const isToday = date.toDateString() === today.toDateString();
+    
+    if (isToday) {
+      const [hours, minutes] = slot.split(':').map(Number);
+      const slotTime = new Date();
+      slotTime.setHours(hours, minutes, 0, 0);
+      return slotTime > today;
+    }
+    return true;
+  });
 
   const selectModality = (mode) => {
     setFormData({ ...formData, modality: mode });
@@ -78,7 +91,7 @@ const Booking = () => {
 
       if (res.ok) {
         setStep(3);
-        const message = `Hola Lic. Araceli Rojas! Soy ${formData.name}. Acabo de agendar un turno para consulta.\n\n📅 Fecha: ${bookingData.date}\n⏰ Hora: ${bookingData.time}hs\n💻 Modalidad: ${formData.modality}\n📝 Motivo: ${formData.reason}`;
+        const message = `Hola Lic. Araceli Rojas! Soy ${formData.name}. Acabo de agendar un turno para consulta.\n\n📅 Fecha: ${bookingData.date}\n⏰ Hora: ${bookingData.time}hs\n📍 Modalidad: ${formData.modality}\n📝 Motivo: ${formData.reason}`;
         window.open(`https://wa.me/5493765130012?text=${encodeURIComponent(message)}`, '_blank');
         setFormData({ name: '', phone: '', reason: '', modality: 'Virtual' });
       } else {
@@ -117,7 +130,7 @@ const Booking = () => {
             <h2 className="text-4xl font-black text-secondary uppercase tracking-tighter">
                 Sistema de <span className="text-primary">Turnos</span>
             </h2>
-            <p className="text-slate-500 mt-2 italic font-medium">Atención 100% Remota - Coordina tu espacio de escucha</p>
+            <p className="text-slate-500 mt-2 italic font-medium">Coordina tu espacio de escucha profesional</p>
         </header>
         
         <div className="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-3xl shadow-2xl border border-slate-100 relative overflow-hidden">
@@ -155,7 +168,7 @@ const Booking = () => {
                       </button>
                     ))
                   ) : (
-                    <p className="col-span-3 text-sm italic text-slate-400 text-center py-10">No hay horarios disponibles.</p>
+                    <p className="col-span-3 text-sm italic text-slate-400 text-center py-10">No hay horarios disponibles para hoy.</p>
                   )}
                 </div>
 
@@ -188,8 +201,23 @@ const Booking = () => {
                     </div>
                     <CheckCircle size={20} className="text-primary"/>
                   </button>
+
+                  <button 
+                    onClick={() => selectModality('Presencial')}
+                    className="flex items-center justify-between p-5 rounded-2xl border-2 border-secondary/20 hover:border-primary hover:bg-primary/5 transition-all group bg-white"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="bg-slate-100 p-3 rounded-xl text-secondary group-hover:text-primary transition-colors">
+                        <MapPin size={24}/>
+                      </div>
+                      <div className="text-left">
+                        <span className="block font-bold text-secondary">Presencial</span>
+                        <span className="text-[10px] text-gray-500 uppercase">En Consultorio</span>
+                      </div>
+                    </div>
+                  </button>
                 </div>
-                <p className="mt-6 text-xs text-gray-400 italic">Actualmente la Licenciada solo brinda atención remota.</p>
+                
                 <button 
                   onClick={() => setShowModalityModal(false)}
                   className="mt-8 text-slate-400 text-sm font-bold hover:text-red-500 transition-colors"
@@ -263,7 +291,7 @@ const Booking = () => {
               </div>
               <h3 className="text-3xl font-black mb-3 tracking-tighter">¡TURNO SOLICITADO!</h3>
               <p className="text-slate-500 max-w-sm mx-auto mb-8">
-                La Lic. Araceli ha sido notificada. Por favor, envía el mensaje de WhatsApp que se acaba de abrir para coordinar el pago y el enlace de la sesión.
+                La Lic. Araceli ha sido notificada. Por favor, envía el mensaje de WhatsApp que se acaba de abrir para coordinar los detalles de la sesión.
               </p>
               <button 
                 onClick={() => setStep(1)} 
