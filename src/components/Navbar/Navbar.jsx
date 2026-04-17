@@ -86,8 +86,12 @@ const Navbar = () => {
                   <a href="/admin" className="text-[10px] font-black text-primary border-2 border-primary px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-all uppercase tracking-tighter">
                     Panel Gestión
                   </a>
-                  <button onClick={handleLogout} className="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Salir">
-                    <HiLogout size={24} />
+                  <button 
+                    onClick={handleLogout} 
+                    className="flex items-center gap-2 text-slate-400 hover:text-red-500 transition-colors"
+                  >
+                    <span className="text-[10px] font-black uppercase tracking-tighter">Cerrar Sesión</span>
+                    <HiLogout size={22} />
                   </button>
                 </div>
               ) : (

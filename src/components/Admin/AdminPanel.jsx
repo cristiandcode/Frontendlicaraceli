@@ -203,7 +203,7 @@ const AdminPanel = () => {
 
       {deleteModal.show && (
         <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all">
-          <div className="bg-white w-full max-w-md rounded-[2.5rem] md:rounded-3xl p-8 shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-10 md:slide-in-from-bottom-0 duration-300">
+          <div className="bg-white w-full max-w-md rounded-t-[2.5rem] md:rounded-3xl p-8 shadow-2xl animate-in slide-in-from-bottom-full md:zoom-in-95 md:slide-in-from-bottom-0 duration-300">
             <div className="flex justify-between items-start mb-6">
               <div className="bg-red-50 p-4 rounded-2xl text-red-500">
                 <Trash2 size={28} />
@@ -234,26 +234,27 @@ const AdminPanel = () => {
                   GESTIÓN <span className="text-primary">AGENDA</span>
                 </h1>
             </div>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] ml-1">
+            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest md:ml-1">
               Lic. Araceli Rojas — CD Soluciones
             </p>
           </div>
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <Link to="/" className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:bg-slate-100 px-6 py-3 rounded-xl text-xs font-bold transition-all border border-slate-200">
-              <ArrowLeft size={16} /> Volver
+            <Link to="/" className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:bg-slate-100 px-4 md:px-6 py-3 rounded-xl text-sm font-bold transition-all border border-slate-200">
+              <ArrowLeft size={16} /> <span>Volver</span>
             </Link>
-            <button onClick={handleLogout} className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white px-6 py-3 rounded-xl text-xs font-bold transition-all border border-red-100">
-              <LogOut size={16} /> Salir
+            <button onClick={handleLogout} className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white px-4 md:px-6 py-3 rounded-xl text-sm font-bold transition-all border border-red-100">
+              <LogOut size={16} /> <span>Salir</span>
             </button>
           </div>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+          {/* Días Laborales */}
           <section className="lg:col-span-4 xl:col-span-3 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
             <h3 className="font-black mb-6 flex items-center gap-3 text-slate-700 uppercase text-xs tracking-widest">
               <CalendarDays size={18} className="text-primary" /> Días Laborales
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-1 gap-2">
+            <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
               {[1, 2, 3, 4, 5, 6, 0].map(d => (
                 <label key={d} className={`flex items-center gap-3 p-4 rounded-2xl cursor-pointer transition-all border ${settings?.workingDays?.includes(d) ? 'bg-primary/5 border-primary/20 text-primary ring-1 ring-primary/10' : 'bg-slate-50 border-transparent text-slate-400'}`}>
                   <input 
@@ -274,19 +275,20 @@ const AdminPanel = () => {
             </div>
           </section>
 
-          <section className="lg:col-span-8 xl:col-span-9 bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100">
+          {/* Configuración de Horas */}
+          <section className="lg:col-span-8 xl:col-span-9 bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
             <h3 className="font-black mb-6 flex items-center gap-3 text-slate-700 uppercase text-xs tracking-widest">
               <Clock size={18} className="text-primary" /> Configurar Horas
             </h3>
             
-            <div className="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide -mx-2 px-2">
+            <div className="flex gap-2 overflow-x-auto pb-4 mb-8 scrollbar-hide -mx-2 px-2 snap-x">
               {[1, 2, 3, 4, 5, 6, 0].map(d => (
                 <button
                   key={d}
                   onClick={() => setActiveTab(d)}
-                  className={`px-6 py-3 text-xs font-black rounded-2xl transition-all whitespace-nowrap border-2 ${
+                  className={`px-6 py-3 text-sm font-black rounded-2xl transition-all whitespace-nowrap border-2 snap-start ${
                     activeTab === d 
-                    ? 'bg-slate-900 border-slate-900 text-white shadow-xl translate-y-[-2px]' 
+                    ? 'bg-slate-900 border-slate-900 text-white shadow-xl' 
                     : 'bg-white border-slate-100 text-slate-400 hover:border-slate-200'
                   }`}
                 >
@@ -295,44 +297,44 @@ const AdminPanel = () => {
               ))}
             </div>
 
-            <div className="bg-[#F8FAFC] p-6 rounded-[2rem] mb-8 border border-slate-100">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Generador Automático</p>
+            <div className="bg-[#F8FAFC] p-4 md:p-6 rounded-[2rem] mb-8 border border-slate-100">
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Generador Automático</p>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="md:col-span-2 grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                        <span className="text-[9px] font-bold text-slate-400 ml-2 uppercase">Inicio</span>
+                        <span className="text-xs font-bold text-slate-400 ml-2 uppercase">Inicio</span>
                         <input type="time" value={range.start} onChange={(e)=>setRange({...range, start: e.target.value})} className="w-full p-4 rounded-2xl border-none shadow-sm text-sm font-bold focus:ring-2 ring-primary outline-none" />
                     </div>
                     <div className="space-y-1">
-                        <span className="text-[9px] font-bold text-slate-400 ml-2 uppercase">Fin</span>
+                        <span className="text-xs font-bold text-slate-400 ml-2 uppercase">Fin</span>
                         <input type="time" value={range.end} onChange={(e)=>setRange({...range, end: e.target.value})} className="w-full p-4 rounded-2xl border-none shadow-sm text-sm font-bold focus:ring-2 ring-primary outline-none" />
                     </div>
                 </div>
                 <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-slate-400 ml-2 uppercase">Duración</span>
+                    <span className="text-xs font-bold text-slate-400 ml-2 uppercase">Duración</span>
                     <select value={range.interval} onChange={(e)=>setRange({...range, interval: e.target.value})} className="w-full p-4 rounded-2xl border-none shadow-sm text-sm font-bold focus:ring-2 ring-primary outline-none appearance-none bg-white">
-                        <option value="30">30</option>
+                        <option value="30">30 min</option>
                         <option value="45">45 min</option>
                         <option value="60">1 hora</option>
                     </select>
                 </div>
-                <button onClick={addRange} className="self-end bg-secondary text-white p-4 rounded-2xl font-black text-xs uppercase hover:bg-primary transition-all shadow-md shadow-secondary/10">
+                <button onClick={addRange} className="md:self-end bg-slate-900 text-white p-4 rounded-2xl font-black text-sm uppercase hover:bg-primary transition-all shadow-md active:scale-95">
                   Generar
                 </button>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3 min-h-[120px] content-start">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 min-h-[120px] content-start">
               {(settings?.workingHours?.[activeTab] || []).length === 0 ? (
-                <div className="w-full flex flex-col items-center justify-center py-8 text-slate-300 border-2 border-dashed border-slate-100 rounded-[2rem]">
+                <div className="col-span-full flex flex-col items-center justify-center py-12 text-slate-300 border-2 border-dashed border-slate-100 rounded-[2rem]">
                     <Clock size={32} className="mb-2 opacity-20" />
-                    <p className="text-xs font-bold">No hay horarios definidos</p>
+                    <p className="text-sm font-bold">Sin horarios para este día</p>
                 </div>
               ) : (
                 (settings?.workingHours?.[activeTab] || []).map(h => (
-                  <div key={h} className="group flex items-center gap-3 bg-white px-5 py-3 rounded-2xl border border-slate-200 hover:border-primary transition-all hover:shadow-md animate-in fade-in zoom-in-95">
+                  <div key={h} className="group flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-slate-200 hover:border-primary transition-all hover:shadow-sm">
                     <span className="font-black text-sm text-slate-700">{h}hs</span>
-                    <button onClick={() => removeHour(h)} className="w-6 h-6 flex items-center justify-center rounded-full bg-slate-50 text-slate-300 group-hover:bg-red-50 group-hover:text-red-500 transition-all">
+                    <button onClick={() => removeHour(h)} className="w-6 h-6 flex items-center justify-center rounded-full bg-slate-50 text-slate-300 hover:bg-red-50 hover:text-red-500 transition-all">
                       <X size={14} />
                     </button>
                   </div>
@@ -340,10 +342,10 @@ const AdminPanel = () => {
               )}
             </div>
             
-            <div className="mt-10 pt-6 border-t border-slate-50 flex justify-end">
+            <div className="mt-10 pt-6 border-t border-slate-50 flex justify-center md:justify-end">
                 <button 
                     onClick={handleUpdate} 
-                    className="flex items-center gap-2 bg-slate-900 text-white px-8 py-3 rounded-xl font-bold text-xs uppercase hover:bg-primary transition-all shadow-lg active:scale-95"
+                    className="w-full md:w-auto flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-4 md:py-3 rounded-xl font-bold text-sm uppercase hover:bg-primary transition-all shadow-lg active:scale-95"
                 >
                     <Save size={16} /> Guardar cambios
                 </button>
@@ -351,27 +353,29 @@ const AdminPanel = () => {
           </section>
         </div>
 
+        {/* Listado de Pacientes */}
         <section className="mb-20">
-          <div className="flex items-center justify-between mb-8 px-2">
-            <h2 className="text-xl font-black flex items-center gap-3 text-slate-800 uppercase tracking-tight">
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-8 px-2 gap-4">
+            <h2 className="text-2xl font-black flex items-center gap-3 text-slate-800 uppercase tracking-tight">
               <div className="p-2 bg-primary/10 rounded-lg text-primary"><Users size={20} /></div>
               Pacientes Agendados
             </h2>
-            <span className="bg-slate-100 text-slate-500 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
+            <span className="bg-slate-100 text-slate-500 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest">
               Total: {appointments.length}
             </span>
           </div>
 
-          <div className="hidden md:block bg-white rounded-[2rem] shadow-sm overflow-hidden border border-slate-100">
+          {/* Tabla para Desktop */}
+          <div className="hidden lg:block bg-white rounded-[2rem] shadow-sm overflow-hidden border border-slate-100">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-slate-50/50">
-                    <th className="p-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Horario</th>
-                    <th className="p-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Paciente</th>
-                    <th className="p-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-center">Modalidad</th>
-                    <th className="p-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Motivo</th>
-                    <th className="p-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-right">Acciones</th>
+                    <th className="p-6 text-xs font-black text-slate-400 uppercase tracking-widest">Horario</th>
+                    <th className="p-6 text-xs font-black text-slate-400 uppercase tracking-widest">Paciente</th>
+                    <th className="p-6 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Modalidad</th>
+                    <th className="p-6 text-xs font-black text-slate-400 uppercase tracking-widest">Motivo</th>
+                    <th className="p-6 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
@@ -389,36 +393,36 @@ const AdminPanel = () => {
                       <tr key={apt._id} className="hover:bg-slate-50/50 transition-colors">
                         <td className="p-6">
                           <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-slate-400 uppercase mb-1">{apt.date}</span>
+                            <span className="text-xs font-bold text-slate-400 uppercase mb-1">{apt.date}</span>
                             <span className="text-lg font-black text-primary tracking-tight">{apt.time}hs</span>
                           </div>
                         </td>
                         <td className="p-6">
                           <div className="flex flex-col">
-                            <span className="font-black text-slate-700 text-base">{apt.name}</span>
-                            <span className="text-xs font-bold text-slate-400 flex items-center gap-1"><Phone size={10}/> {apt.phone}</span>
+                            <span className="font-black text-slate-700 text-sm">{apt.name}</span>
+                            <span className="text-sm font-bold text-slate-400 flex items-center gap-1"><Phone size={12}/> {apt.phone}</span>
                           </div>
                         </td>
                         <td className="p-6 text-center">
                             {apt.modality === 'Presencial' ? (
-                              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-tighter border border-emerald-100">
-                                <MapPin size={12} /> Presencial
+                              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-black uppercase border border-emerald-100">
+                                <MapPin size={14} /> Presencial
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-tighter border border-blue-100">
-                                <Video size={12} /> Virtual
+                              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-xs font-black uppercase border border-blue-100">
+                                <Video size={14} /> Virtual
                               </span>
                             )}
                         </td>
                         <td className="p-6">
                           <div className="max-w-[200px] truncate">
-                            <span className="text-xs font-bold text-slate-500 bg-slate-100/50 px-3 py-1.5 rounded-lg border border-slate-100">
+                            <span className="text-sm font-bold text-slate-500 bg-slate-100/50 px-3 py-1.5 rounded-lg border border-slate-100">
                                 {apt.reason || "Consulta general"}
                             </span>
                           </div>
                         </td>
                         <td className="p-6 text-right">
-                          <div className="flex justify-end gap-2 transition-opacity">
+                          <div className="flex justify-end gap-2">
                             <button onClick={() => openWhatsApp(apt)} className="p-3 bg-white text-primary hover:bg-primary hover:text-white rounded-xl shadow-sm border border-slate-100 transition-all">
                               <MessageCircle size={18} />
                             </button>
@@ -435,42 +439,58 @@ const AdminPanel = () => {
             </div>
           </div>
 
-          <div className="md:hidden space-y-4">
+          {/* Cards para Mobile / Tablet */}
+          <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4">
             {appointments.length === 0 ? (
-               <div className="bg-white rounded-[2rem] p-12 text-center border border-slate-100">
-                  <p className="text-slate-400 font-bold italic">No hay pacientes agendados</p>
+               <div className="col-span-full bg-white rounded-[2rem] p-12 text-center border border-slate-100">
+                  <p className="text-slate-400 font-bold italic text-sm">No hay pacientes agendados</p>
                </div>
             ) : (
               appointments.map((apt) => (
-                <div key={apt._id} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-4">
-                     {apt.modality === 'Presencial' ? (
-                       <span className="px-3 py-1 bg-emerald-50 text-emerald-500 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-100">Presencial</span>
-                     ) : (
-                       <span className="px-3 py-1 bg-blue-50 text-blue-500 rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100">Virtual</span>
-                     )}
-                  </div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-primary/10 p-4 rounded-2xl text-primary text-center">
-                        <span className="block text-[10px] font-black uppercase leading-none mb-1 opacity-60">{apt.date.split('-')[2]}</span>
-                        <span className="block text-xl font-black leading-none">{apt.time}</span>
-                    </div>
-                    <div>
-                        <h4 className="font-black text-slate-800 text-lg leading-tight mb-1">{apt.name}</h4>
-                        <p className="text-xs font-bold text-slate-400 tracking-tighter">{apt.phone}</p>
+                <div key={apt._id} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col gap-5">
+                  {/* Header de la Card */}
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-primary/10 p-3 rounded-2xl text-primary text-center min-w-[70px]">
+                        <span className="block text-xs font-black uppercase leading-none mb-1 opacity-60">
+                          {apt.date.split('-').slice(1).reverse().join('/')}
+                        </span>
+                        <span className="block text-lg font-black leading-none">{apt.time}</span>
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <h4 className="font-black text-slate-800 text-sm leading-tight truncate">{apt.name}</h4>
+                        <p className="text-sm font-bold text-slate-400 flex items-center gap-1"><Phone size={12}/> {apt.phone}</p>
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="bg-slate-50 p-4 rounded-2xl mb-6">
-                     <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Motivo de consulta</p>
-                     <p className="text-sm font-bold text-slate-600 italic">"{apt.reason || "Sin descripción proporcionada"}"</p>
+                  {/* Modalidad centrada en móvil */}
+                  <div className="flex">
+                    {apt.modality === 'Presencial' ? (
+                      <span className="px-3 py-1 bg-emerald-50 text-emerald-500 rounded-lg text-xs font-black uppercase border border-emerald-100 flex items-center gap-2">
+                        <MapPin size={12} /> Presencial
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 bg-blue-50 text-blue-500 rounded-lg text-xs font-black uppercase border border-blue-100 flex items-center gap-2">
+                        <Video size={12} /> Virtual
+                      </span>
+                    )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <button onClick={() => openWhatsApp(apt)} className="flex items-center justify-center gap-2 bg-white text-primary p-4 rounded-2xl font-black text-xs uppercase border-2 border-primary/20 transition-all active:scale-95">
+                  {/* Cuerpo - Motivo */}
+                  <div className="bg-slate-50 p-4 rounded-2xl">
+                     <p className="text-xs font-black text-slate-400 uppercase mb-1 tracking-wider">Motivo de consulta</p>
+                     <p className="text-sm font-bold text-slate-600 italic leading-relaxed break-words">
+                       {apt.reason ? `"${apt.reason}"` : "Sin descripción adicional"}
+                     </p>
+                  </div>
+
+                  {/* Acciones */}
+                  <div className="grid grid-cols-2 gap-3 mt-auto">
+                    <button onClick={() => openWhatsApp(apt)} className="flex items-center justify-center gap-2 bg-white text-primary py-3.5 rounded-xl font-black text-sm uppercase border border-primary/20 active:scale-95 transition-all shadow-sm">
                       <MessageCircle size={18} /> WhatsApp
                     </button>
-                    <button onClick={() => setDeleteModal({ show: true, apt })} className="flex items-center justify-center gap-2 bg-red-50 text-red-500 p-4 rounded-2xl font-black text-xs uppercase border-2 border-red-100 transition-all active:scale-95">
+                    <button onClick={() => setDeleteModal({ show: true, apt })} className="flex items-center justify-center gap-2 bg-red-50 text-red-500 py-3.5 rounded-xl font-black text-sm uppercase border border-red-100 active:scale-95 transition-all">
                       <Trash2 size={18} /> Anular
                     </button>
                   </div>
