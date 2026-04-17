@@ -96,7 +96,7 @@ const Navbar = () => {
                 </div>
               ) : (
                 <a href="/admin" className="flex items-center gap-2 text-slate-400 hover:text-primary transition-all group">
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Ingreso</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest transition-opacity">Acceso Profesional</span>
                   <HiOutlineUserCircle size={28} />
                 </a>
               )}
