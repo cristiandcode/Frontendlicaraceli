@@ -4,7 +4,7 @@ import { FaInstagram, FaTiktok, FaExternalLinkAlt } from "react-icons/fa";
 
 const Footer = () => {
   const instagramUrl = "https://www.instagram.com/silvia.araceli.rojas?igsh=MWQwaXNzYXZrcmY1ag==";
-  const tiktokUrl = "https://www.tiktok.com/@lic.aracelirojas?_t=ZM-8uH6unp2D6C&_r=1";
+  const tiktokUrl = "https://www.tiktok.com/@silaracelipsicologa?_r=1&_t=ZS-95bFVUiSg00";
 
   return (
     <footer className="bg-white text-secondary pt-12 border-t border-slate-200 transition-colors duration-300">
