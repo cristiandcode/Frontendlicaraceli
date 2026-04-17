@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
-import { Trash2, MessageCircle, Calendar, Clock, Users, LogOut, Save, X, CheckCircle, Video, User, ArrowLeft, AlertCircle, Phone, CalendarDays } from 'lucide-react';
+import { Trash2, MessageCircle, Calendar, Clock, Users, LogOut, Save, X, CheckCircle, Video, User, ArrowLeft, AlertCircle, Phone, CalendarDays, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminPanel = () => {
@@ -403,9 +403,15 @@ const AdminPanel = () => {
                           </div>
                         </td>
                         <td className="p-6 text-center">
-                            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-tighter border border-blue-100">
-                              <Video size={12} /> Virtual
-                            </span>
+                            {apt.modality === 'Presencial' ? (
+                              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-tighter border border-emerald-100">
+                                <MapPin size={12} /> Presencial
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-tighter border border-blue-100">
+                                <Video size={12} /> Virtual
+                              </span>
+                            )}
                         </td>
                         <td className="p-6">
                           <div className="max-w-[200px] truncate">
@@ -442,7 +448,11 @@ const AdminPanel = () => {
               appointments.map((apt) => (
                 <div key={apt._id} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-4">
-                     <span className="px-3 py-1 bg-blue-50 text-blue-500 rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100">Virtual</span>
+                     {apt.modality === 'Presencial' ? (
+                       <span className="px-3 py-1 bg-emerald-50 text-emerald-500 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-100">Presencial</span>
+                     ) : (
+                       <span className="px-3 py-1 bg-blue-50 text-blue-500 rounded-full text-[9px] font-black uppercase tracking-widest border border-blue-100">Virtual</span>
+                     )}
                   </div>
                   <div className="flex items-center gap-4 mb-6">
                     <div className="bg-primary/10 p-4 rounded-2xl text-primary text-center">
