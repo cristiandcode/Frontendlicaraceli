@@ -18,8 +18,8 @@ const Experience = () => {
 
           <div className="grid grid-rows-2 gap-6">
             <div className="text-center p-6 bg-white/10 rounded-xl border border-white/20 backdrop-blur-sm">
-              <h1 className="text-4xl font-bold text-white">100%</h1>
-              <p className="font-medium text-white/90">Modalidad Online / Remota</p>
+              <h1 className="text-4xl font-bold text-white">Mixta</h1>
+              <p className="font-medium text-white/90">Modalidad Presencial y Online</p>
             </div>
             <div className="text-center p-6 bg-white/10 rounded-xl border-l-4 border-white backdrop-blur-sm">
               <h1 className="text-4xl font-bold text-white">Grupal</h1>
