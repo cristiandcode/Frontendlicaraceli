@@ -15,7 +15,7 @@ const About = () => {
             </h1>
             
             <p className="text-white text-lg leading-relaxed font-medium">
-              Soy Licenciada en Psicología y Técnica en Psicología Social, con una vocación profunda por el acompañamiento humano. Desde el año 2017, me desempeño profesionalmente en las áreas de niñez, género, familia y discapacidad, brindando un espacio de contención basado en el respeto y la ética profesional.
+              Soy Licenciada en Psicología y Técnica en Psicología Social. MP2274. Con una vocación profunda por el acompañamiento humano. Desde el año 2017, me desempeño profesionalmente en las áreas de niñez, género, familia y discapacidad, brindando un espacio de contención basado en el respeto y la ética profesional.
             </p>
             
             <p className="text-white/90 text-lg leading-relaxed">
