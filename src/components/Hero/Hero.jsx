@@ -19,7 +19,7 @@ const Hero = () => {
                 - Tablet (md): w-80 h-80 (Antes era muy grande)
                 - Laptop/PC (lg): w-[450px] h-[450px] 
             */}
-            <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-[450px] lg:h-[450px] rounded-full overflow-hidden border-8 border-white shadow-2xl mt-5">
+            <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-[400px] lg:h-[400px] rounded-full overflow-hidden border-8 border-white shadow-2xl mt-5">
               <img 
                 src={HeroImg} 
                 alt="Lic. Araceli Rojas - Psicóloga" 
