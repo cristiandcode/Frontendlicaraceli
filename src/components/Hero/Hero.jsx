@@ -31,7 +31,7 @@ const Hero = () => {
 
           {/* Texto de Bienvenida Personalizado */}
           <div className="space-y-5 text-center sm:text-left z-10">
-            <p className="text-primary font-bold tracking-[0.2em] uppercase text-sm">
+            <p className="text-primary font-bold tracking-[0.2em] uppercase text-sm md:mt-5">
               Psicología Social y de acompañamiento terapéutico
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-secondary">
