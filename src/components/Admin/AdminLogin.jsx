@@ -11,9 +11,18 @@ const AdminLogin = ({ onLogin }) => {
   // Nombre del cliente para la personalización
   const CLIENT_NAME = import.meta.env.VITE_CLIENT_NAME || "Lic. Araceli Rojas";
   
-  // Aseguramos que la URL de la API sea correcta. 
-  // Si la variable de entorno no tiene el /api, lo manejamos aquí.
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+  /**
+   * CORRECCIÓN DE URL:
+   * Esta lógica asegura que siempre se use /api, incluso si en Netlify
+   * la variable VITE_API_URL viene sin ella.
+   */
+  const getApiUrl = () => {
+    const rawUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
+    // Si la URL termina en /api, la dejamos; si no, se lo agregamos.
+    return rawUrl.endsWith('/api') ? rawUrl : `${rawUrl}/api`;
+  };
+
+  const API_BASE_URL = getApiUrl();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +38,7 @@ const AdminLogin = ({ onLogin }) => {
 
     try {
       // Implementación con Axios - Base de Oro
-      // Se envía el password tanto en header como en body para máxima compatibilidad con el middleware
+      // Se envía el password tanto en header como en body para máxima compatibilidad
       await axios.post(`${API_BASE_URL}/settings/login`, 
         { password: cleanPassword }, 
         {
@@ -45,7 +54,7 @@ const AdminLogin = ({ onLogin }) => {
       console.error("Error de login:", err);
       
       if (err.response && err.response.status === 404) {
-        setError("Error de conexión: No se encontró la ruta en el servidor.");
+        setError("Error de conexión: No se encontró la ruta /api en el servidor.");
       } else if (err.response && err.response.status === 401) {
         setError("Contraseña incorrecta. Intentalo de nuevo.");
       } else {
