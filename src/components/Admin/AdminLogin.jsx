@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const AdminLogin = ({ onLogin }) => {
   const [password, setPassword] = useState('');
@@ -22,24 +23,18 @@ const AdminLogin = ({ onLogin }) => {
     setIsLoading(true);
 
     try {
-      // Usamos fetch nativo para evitar errores de dependencias (sustituye a axios)
-      const response = await fetch(`${API_URL}/settings/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-password': password.trim()
+      // Implementación con Axios - Base de Oro
+      await axios.post(`${API_URL}/settings/login`, {}, {
+        headers: { 
+          'x-admin-password': password.trim() 
         }
       });
 
-      if (!response.ok) {
-        // Si el servidor responde con 401 o cualquier error, lanzamos al catch
-        throw new Error("Unauthorized");
-      }
-
-      // Si la respuesta es exitosa (200), ejecutamos el login
+      // Si Axios no detecta error (status 200), procedemos
       onLogin(password.trim());
     } catch (err) {
       console.error("Error de login:", err);
+      // Axios captura automáticamente errores 4xx y 5xx en el catch
       setError("Contraseña incorrecta. Intentalo de nuevo.");
     } finally {
       setIsLoading(false);
@@ -59,6 +54,7 @@ const AdminLogin = ({ onLogin }) => {
         </Link>
 
         <div className="text-center mb-10 mt-4">
+          {/* Icono con estilo personalizado */}
           <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
             <Lock className="text-primary w-10 h-10 -rotate-3" />
           </div>
