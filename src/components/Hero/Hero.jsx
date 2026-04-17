@@ -4,7 +4,7 @@ import HeroImg from "../../assets/fotolicaraceli.jpeg";
 
 const Hero = () => {
   return (
-    <div id="home" className="bg-white text-secondary py-12 sm:py-0 overflow-hidden transition-colors duration-300 mt-5 md:mt-5">
+    <div id="home" className="bg-white text-secondary py-12 sm:py-0 md:pt-24 overflow-hidden transition-colors duration-300 mt-5 md:mt-5">
       <div className="container mx-auto px-4 pb-4">
         {/* Ajuste en gap y alineación para tablets (md) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-10 place-items-center min-h-[600px]">
