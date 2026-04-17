@@ -6,7 +6,7 @@ const CommitmentsData = [
     id: 1,
     name: "Secreto Profesional",
     icon: <FaUserShield className="text-4xl text-primary" />,
-    description: "Tu privacidad es la base del proceso. Todas nuestras sesiones se rigen bajo el más estricto secreto profesional y ética ética psicológica."
+    description: "Tu privacidad es la base del proceso. Todas nuestras sesiones se rigen bajo el más estricto secreto profesional y ética psicológica."
   },
   {
     id: 2,
