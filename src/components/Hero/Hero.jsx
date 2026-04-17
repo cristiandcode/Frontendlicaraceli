@@ -14,16 +14,17 @@ const Hero = () => {
             {/* Resplandor circular de fondo */}
             <div className="absolute -inset-4 bg-gradient-to-r from-primary to-accent rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition duration-1000"></div>
             
-            {/* AJUSTE RESPONSIVE: 
-                - Celular: w-72 h-72
-                - Tablet (md): w-80 h-80 (Antes era muy grande)
-                - Laptop/PC (lg): w-[450px] h-[450px] 
-            */}
-            <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-[400px] lg:h-[400px] rounded-full overflow-hidden border-8 border-white shadow-2xl mt-5">
+            {/* Contenedor circular con fondo suave para cuando la foto se aleja */}
+            <div className="relative w-72 h-72 md:w-80 md:h-80 lg:w-[450px] lg:h-[450px] rounded-full overflow-hidden border-8 border-white shadow-2xl mt-5 bg-[#f9f9f9]">
               <img 
                 src={HeroImg} 
                 alt="Lic. Araceli Rojas - Psicóloga" 
-                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                /* CAMBIO CLAVE: 
+                   - object-contain: para que no se corte la cara.
+                   - scale-90: para alejar la toma un 10% (puedes usar scale-75 si quieres más lejos).
+                   - p-4: un pequeño margen interno para despegar los bordes.
+                */
+                className="w-full h-full object-contain p-2 scale-90 transition-transform duration-500 group-hover:scale-95"
               />
             </div>
           </div>
@@ -31,7 +32,7 @@ const Hero = () => {
           {/* Texto de Bienvenida Personalizado */}
           <div className="space-y-5 text-center sm:text-left z-10">
             <p className="text-primary font-bold tracking-[0.2em] uppercase text-sm">
-              Psicología Social y de acompañamiento terapéutic
+              Psicología Social y de acompañamiento terapéutico
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-secondary">
               Lic. <span className="text-primary">Araceli Rojas</span>
