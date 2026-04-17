@@ -26,7 +26,7 @@ const About = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
               <div className="bg-white p-4 rounded-xl shadow-lg">
                 <h3 className="font-bold text-primary italic">Formación Base</h3>
-                <p className="text-sm text-secondary font-medium">UCAD - Universidad Tecnológica</p>
+                <p className="text-sm text-secondary font-medium">UCAD- Universidad de Ciencias y Administración</p>
               </div>
               <div className="bg-white p-4 rounded-xl shadow-lg">
                 <h3 className="font-bold text-primary italic">Especialidades</h3>
