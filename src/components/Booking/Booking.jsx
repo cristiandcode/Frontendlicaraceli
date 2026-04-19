@@ -14,11 +14,10 @@ const Booking = () => {
   const [settings, setSettings] = useState({
     workingDays: [1, 2, 3, 4, 5],
     workingHours: {},
-    blockedDates: []
+    blockedDates: [],
+    modalities: {} // Nuevo: para manejar la modalidad por día
   });
 
-  // CORRECCIÓN: Se eliminó "/api" manual porque VITE_API_URL ya suele traerlo
-  // Si tu .env no lo trae, cambia esto a: `${API_BASE_URL}/api/appointments`
   const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const APPOINTMENTS_URL = `${API_BASE_URL}/appointments`;
   const SETTINGS_URL = `${API_BASE_URL}/settings`;
@@ -59,7 +58,6 @@ const Booking = () => {
   };
 
   const currentDayOfWeek = date.getDay();
-  // Buscamos slots soportando que la key sea número o string
   const allSlotsForDay = settings.workingHours[currentDayOfWeek] || settings.workingHours[String(currentDayOfWeek)] || [];
   
   const availableSlots = allSlotsForDay.filter(slot => {
@@ -77,6 +75,20 @@ const Booking = () => {
     }
     return true;
   });
+
+  // Lógica nueva para manejar el flujo de modalidad
+  const handleNextStep = () => {
+    const dayModality = settings.modalities?.[currentDayOfWeek] || settings.modalities?.[String(currentDayOfWeek)] || 'virtual';
+    
+    if (dayModality === 'ambos') {
+      setShowModalityModal(true);
+    } else {
+      // Si es solo presencial o solo virtual, lo asignamos directo y pasamos al paso 2
+      const fixedMode = dayModality === 'presencial' ? 'Presencial' : 'Virtual';
+      setFormData({ ...formData, modality: fixedMode });
+      setStep(2);
+    }
+  };
 
   const selectModality = (mode) => {
     setFormData({ ...formData, modality: mode });
@@ -187,7 +199,7 @@ const Booking = () => {
                 </div>
 
                 {selectedTime && (
-                  <button onClick={() => setShowModalityModal(true)} className="w-full mt-auto bg-primary text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-primary/20">
+                  <button onClick={handleNextStep} className="w-full mt-auto bg-primary text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl shadow-primary/20">
                     Siguiente Paso
                   </button>
                 )}

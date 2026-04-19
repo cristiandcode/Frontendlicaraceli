@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLogin from './AdminLogin';
-import { Trash2, MessageCircle, Calendar, Clock, Users, LogOut, Save, X, CheckCircle, Video, ArrowLeft, AlertCircle, Phone, CalendarDays, MapPin } from 'lucide-react';
+import { Trash2, MessageCircle, Calendar, Clock, Users, LogOut, Save, X, CheckCircle, Video, ArrowLeft, AlertCircle, Phone, CalendarDays, MapPin, Monitor } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminPanel = () => {
@@ -15,6 +15,9 @@ const AdminPanel = () => {
     workingDays: [],
     workingHours: {
       "1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "0": []
+    },
+    modalities: {
+      "1": "ambos", "2": "ambos", "3": "ambos", "4": "ambos", "5": "ambos", "6": "virtual", "0": "virtual"
     },
     blockedDates: []
   });
@@ -46,10 +49,15 @@ const AdminPanel = () => {
           
           const formattedDays = Array.isArray(data.workingDays) ? data.workingDays : [];
           
+          const formattedModalities = (data.modalities && !Array.isArray(data.modalities))
+            ? data.modalities
+            : { "1": "ambos", "2": "ambos", "3": "ambos", "4": "ambos", "5": "ambos", "6": "virtual", "0": "virtual" };
+          
           setSettings({ 
             ...data, 
             workingDays: formattedDays,
-            workingHours: formattedHours 
+            workingHours: formattedHours,
+            modalities: formattedModalities
           });
         }
       })
@@ -297,6 +305,37 @@ const AdminPanel = () => {
               ))}
             </div>
 
+            {/* Selector de Modalidad para el día activo */}
+            <div className="bg-primary/5 border border-primary/10 p-4 md:p-6 rounded-[2rem] mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+               <div className="flex items-center gap-3">
+                  <div className="p-2 bg-white rounded-xl shadow-sm text-primary">
+                    <Monitor size={20} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Modalidad de atención</p>
+                    <p className="text-sm font-bold text-slate-700">Para los días {daysLabels[activeTab]}</p>
+                  </div>
+               </div>
+               <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-100 w-full md:w-auto">
+                  {['presencial', 'virtual', 'ambos'].map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setSettings({
+                        ...settings,
+                        modalities: { ...settings.modalities, [activeTab]: m }
+                      })}
+                      className={`flex-1 md:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase transition-all ${
+                        settings.modalities?.[activeTab] === m 
+                        ? 'bg-primary text-white shadow-md shadow-primary/20' 
+                        : 'text-slate-400 hover:text-slate-600'
+                      }`}
+                    >
+                      {m}
+                    </button>
+                  ))}
+               </div>
+            </div>
+
             <div className="bg-[#F8FAFC] p-4 md:p-6 rounded-[2rem] mb-8 border border-slate-100">
               <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Generador Automático</p>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -448,7 +487,6 @@ const AdminPanel = () => {
             ) : (
               appointments.map((apt) => (
                 <div key={apt._id} className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col gap-5">
-                  {/* Header de la Card */}
                   <div className="flex justify-between items-start">
                     <div className="flex items-center gap-3">
                       <div className="bg-primary/10 p-3 rounded-2xl text-primary text-center min-w-[70px]">
@@ -464,7 +502,6 @@ const AdminPanel = () => {
                     </div>
                   </div>
                   
-                  {/* Modalidad centrada en móvil */}
                   <div className="flex">
                     {apt.modality === 'Presencial' ? (
                       <span className="px-3 py-1 bg-emerald-50 text-emerald-500 rounded-lg text-xs font-black uppercase border border-emerald-100 flex items-center gap-2">
@@ -477,7 +514,6 @@ const AdminPanel = () => {
                     )}
                   </div>
 
-                  {/* Cuerpo - Motivo */}
                   <div className="bg-slate-50 p-4 rounded-2xl">
                      <p className="text-xs font-black text-slate-400 uppercase mb-1 tracking-wider">Motivo de consulta</p>
                      <p className="text-sm font-bold text-slate-600 italic leading-relaxed break-words">
@@ -485,7 +521,6 @@ const AdminPanel = () => {
                      </p>
                   </div>
 
-                  {/* Acciones */}
                   <div className="grid grid-cols-2 gap-3 mt-auto">
                     <button onClick={() => openWhatsApp(apt)} className="flex items-center justify-center gap-2 bg-white text-primary py-3.5 rounded-xl font-black text-sm uppercase border border-primary/20 active:scale-95 transition-all shadow-sm">
                       <MessageCircle size={18} /> WhatsApp
